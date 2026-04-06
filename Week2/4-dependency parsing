@@ -1,0 +1,47 @@
+## Syntactic Structure
+To understand how we analyze the structure of sentences, we generally look at two different perspectives: 
+1. how words group together (CFG)
+2. how words relate to each other (Dependency).
+
+**Context-Free Grammars (CFG)**
+- Words are organized into nested constituents.
+- PoS (Parts of speech): noun, pronoun, verb, adjective...
+- e.g., $S \rightarrow NP + VP$
+
+**Dependency Grammars**
+- It shows which words depend on (modify, attach to, or are arguments of) which other words.
+- arrow: head -> dependent
+    - some people also draw ``dependent -> head''
+- e.g., used to extract protein-protein interaction
+
+## Dependency Grammars
+e.g., "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas."
+<img src="./images/dependency.png" width="600px" alt="">
+- submitted ——(箭头)→ Bills，标签：nsubj:pass
+    - nsubj = nominal subject，名词主语
+    - :pass = passive，被动语态
+    - 合起来：被动语态的主语。
+    - 中文理解：句法主语（语法上是主语，但语义上是“被…的对象”），这里是“那些法案”。
+- submitted ——→ were，标签：aux
+    - aux = auxiliary，助动词。
+    - “were” 和 “submitted” 一起构成 “were submitted”（被提交了）。
+- submitted ——→ Brownback，标签：obl
+    - obl = oblique nominal，一般是“介词短语里的名词成分”，常做状语（时间、地点、施事等）。
+    - 这里 “by Senator Brownback” 是一个介词短语，表示“由某人”。
+    - 树里常把真正的名词 “Brownback” 记为 obl，介词 “by” 另外用 case 连接（后面会说）。
+
+## Building Dependency Parser
+1. Pre‑treebank era (rule‑based): People hand‑designed grammars and parsers using linguistic rules.
+    - Humans (experts) write explicit grammar rules and hardcoded parsing logic.
+2. Treebank era: Projects like the Penn Treebank hand‑annotate a lot of sentences.
+    - Train parsers (models) on treebanks to imitate the treebank annotations.
+    - **Transition-based parsing** is the most prevalent: 
+        - shift, left arc, right arc
+        - stack, buffer
+    - feature-based ML approach: sparse, incomplete, and expensive to compute
+    - NN approach <img src="./images/NN_parser.png" width="600px" alt="">
+
+
+Evaluation of dependency parser: dependency accuracy or label accuracy
+- UAS: “Did you attach each word to the right parent?”
+- LAS: “Did you attach it to the right parent with the right relation name?”
